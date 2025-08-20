@@ -58,7 +58,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: ["template-devnet-0"]
+        network: ["pk-devnet-0"]
         el-client: >-
           ${{
             fromJSON(format('[{0}]', inputs.el-client || '
@@ -119,7 +119,7 @@ jobs:
       uses: ethpandaops/syncoor@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        server: https://syncoor-api.template-devnet-0.ethpandaops.io
+        server: https://syncoor-api.pk-devnet-0.ethpandaops.io
         server-auth: ${{ secrets.SYNCOOR_SERVER_AUTH }}
         log-force-colors: true
         client-logs: true

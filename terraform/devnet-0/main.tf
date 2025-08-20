@@ -50,11 +50,11 @@ variable "cloudflare_api_token" {
 
 variable "ethereum_network" {
   type    = string
-  default = "template-devnet-0"
+  default = "pk-devnet-0"
 }
 
 variable "base_cidr_block" {
-  default = "10.207.0.0/16"
+  default = "10.16.0.0/16"
 }
 ////////////////////////////////////////////////////////////////////////////////////////
 //                                        LOCALS
@@ -62,7 +62,7 @@ variable "base_cidr_block" {
 locals {
   vm_groups = [
     var.bootnode,
-    var.mev_relay,
+    #var.mev_relay,
     var.lighthouse_geth,
     var.lighthouse_nethermind,
     var.lighthouse_erigon,
