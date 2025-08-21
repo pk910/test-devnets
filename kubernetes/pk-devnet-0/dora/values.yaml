@@ -1,0 +1,116 @@
+# Ansible managed. Don't change this file manually. Template info: /vendor/collections/ansible_collections/ethpandaops/general/roles/generate_kubernetes_config/templates/dora.yaml.j2
+
+dora:
+  fullnameOverride: dora
+  image:
+    repository: docker.ethquokkaops.io/dh/ethpandaops/dora
+    tag: master-latest
+    pullPolicy: Always
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+  ingress:
+    enabled: true
+    className: ingress-nginx-public
+    hosts:
+      - host: dora.pk-devnet-0.ethpandaops.io
+        paths:
+          - path: /
+            pathType: Prefix
+
+  name: pk-devnet-0
+  configPath: "https://config.pk-devnet-0.ethpandaops.io/cl/config.yaml"
+  validatorNamesInventory: "https://config.pk-devnet-0.ethpandaops.io/api/v1/nodes/validator-ranges"
+  proxyCount: 2
+  extraEnv:
+    - name: FRONTEND_PPROF
+      value: "true"
+    - name: FRONTEND_SHOW_SENSITIVE_PEER_INFOS
+      value: "true"
+    - name: API_ENABLED
+      value: "true"
+    - name: API_CORS_ORIGINS
+      value: "*"
+    - name: FRONTEND_ETH_EXPLORER_LINK
+      value: "https://explorer.pk-devnet-0.ethpandaops.io"
+    - name: FRONTEND_PUBLIC_RPC_URL
+      value: "https://rpc.pk-devnet-0.ethpandaops.io"
+    - name: FRONTEND_SHOW_SUBMIT_DEPOSIT
+      value: "true"
+    - name: FRONTEND_SHOW_SUBMIT_EL_REQUESTS
+      value: "true"
+  postgresql:
+    name: "dora-postgresql"
+    fullnameOverride: "dora-postgresql"
+
+  mevRelays:
+    - index: 0
+      name: "Flashbots"
+      url: "http://mev-relay-1.pk-devnet-0.ethpandaops.io:9062/"
+
+  authGroups:
+    pandaops:
+      credentials:
+        username: ""
+        password: "<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>"
+
+  endpoints:
+  # Rpc
+  - url: http://prysm-geth-001:5052
+    name: rpc-prysm-geth-001
+    authGroup: pandaops
+    archive: true
+    priority: 1
+  - url: https://bn-bootnode-1.srv.pk-devnet-0.ethpandaops.io
+    name: bootnode-1
+    authGroup: pandaops
+    priority: -1
+  - url: https://bn-bootnode-2.srv.pk-devnet-0.ethpandaops.io
+    name: bootnode-2
+    authGroup: pandaops
+    priority: -1
+  - url: https://bn-lighthouse-geth-1.srv.pk-devnet-0.ethpandaops.io
+    name: lighthouse-geth-1
+    authGroup: pandaops
+    priority: -1
+    archive: true
+  - url: https://bn-lighthouse-geth-2.srv.pk-devnet-0.ethpandaops.io
+    name: lighthouse-geth-2
+    authGroup: pandaops
+    priority: -1
+    archive: true
+  executionEndpoints:
+  # Rpc
+  - url: http://geth-prysm-001:8545
+    name: rpc-prysm-geth-001
+    authGroup: pandaops
+    archive: true
+    priority: 1
+  - url: https://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-bootnode-1.srv.pk-devnet-0.ethpandaops.io
+    name: bootnode-1
+    authGroup: pandaops
+    priority: -1
+    archive: false
+    engineSnooperUrl: http://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-bootnode-1.srv.pk-devnet-0.ethpandaops.io:8961
+  - url: https://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-bootnode-2.srv.pk-devnet-0.ethpandaops.io
+    name: bootnode-2
+    authGroup: pandaops
+    priority: -1
+    archive: false
+    engineSnooperUrl: http://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-bootnode-2.srv.pk-devnet-0.ethpandaops.io:8961
+  - url: https://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-lighthouse-geth-1.srv.pk-devnet-0.ethpandaops.io
+    name: lighthouse-geth-1
+    authGroup: pandaops
+    priority: -1
+    archive: false
+    engineSnooperUrl: http://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-lighthouse-geth-1.srv.pk-devnet-0.ethpandaops.io:8961
+  - url: https://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-lighthouse-geth-2.srv.pk-devnet-0.ethpandaops.io
+    name: lighthouse-geth-2
+    authGroup: pandaops
+    priority: -1
+    archive: false
+    engineSnooperUrl: http://<path:/secrets/services/services.enc.yaml#ethereum | jsonPath {.testnets.template-devnets.node_ingress.combined}>@rpc-lighthouse-geth-2.srv.pk-devnet-0.ethpandaops.io:8961
