@@ -2,7 +2,7 @@
 variable "bootnode" {
   default = {
     name            = "bootnode"
-    count           = 0
+    count           = 1
     validator_start = 0
     validator_end   = 0
   }
@@ -141,7 +141,7 @@ variable "prysm_nimbusel" {
 variable "lodestar_geth" {
   default = {
     name            = "lodestar-geth"
-    count           = 1
+    count           = 0
     validator_start = 0
     validator_end   = 0
   }
