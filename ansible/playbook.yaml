@@ -1,4 +1,5 @@
 - hosts: localhost
+  connection: local
   roles:
     - role: ethpandaops.general.ethereum_genesis
       tags: [ethereum_genesis]
@@ -60,6 +61,7 @@
 - hosts: ethereum_node
   serial: "{{ batch_count | default('100%') }}"
   become: true
+#  strategy: mitogen_free
   roles:
     - role: ethpandaops.general.ethereum_testnet_config
       tags: [ethereum, eth_testnet_config, ethereum_testnet_config]
@@ -73,7 +75,7 @@
 
 - hosts: ethereum_node
   become: true
-  strategy: free
+#  strategy: mitogen_free
   roles:
     - role: ethpandaops.general.ethereum_node
       tags: [ethereum, ethereum_node]
@@ -131,6 +133,7 @@
       tags: [eth_inventory_web, ethereum_inventory_web]
 
 - hosts: localhost
+  connection: local
   roles:
     - role: ethpandaops.general.ethereum_post_network_setup
       tags: [eth_post_network_setup, ethereum_post_network_setup]
